@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <title>Cadastre-se</title>
+</head>
+
+<body class="fundo">
+    <div class="textopo">
+        RPG de mesa - por ManoToupeira
+    </div>
+    <form class="caixacadastro" id="conta">
+        Seja Bem-Vindo, jovem aventureiro ! <br> <br>
+        <input type="text" placeholder="Digite seu Nome de Login" size="38" id="Nome__"> <b id="nomev"></b> <br> <br>
+        <input type="text" placeholder="Digite seu E-mail" size="38" id="Email__"> <b id="emailv"></b> <br> <br>
+        <input type="password" placeholder="Digite sua senha" size="18" id="Senha__"> <b id="senhav"></b>
+        <input type="password" placeholder="Repita a senha" size="18" id="SenhaR__"> <b id="senharv"></b> <br>
+        <div id="mensagem__"></div>
+        <br>
+        <button type="button" onclick="trocar(conta,personagem)">Cadastre um personagem</button>
+    </form>
+    <div class="caixapersonagem" id="personagem">
+        Crie agora seu personagem ! <br> <br>
+        <input type="text" placeholder="Digite o Nome do personagem" size="38" id="nomep"> <br> <br>
+        <select id="classe__">
+            <option value="0">Escolha uma Classe</option>
+            <option value="Guerreiro">Guerreiro</option>
+            <option value="Arqueiro">Arqueiro</option>
+            <option value="Mago">Mago</option>
+            <option value="Ladino">Ladino</option>
+            <option value="Sacerdote">Sacerdote</option>
+            <option value="Druida">Druida</option>
+        </select>
+        <select id="raca__">
+            <option value="0">Escolha uma Raça</option>
+            <option value="Humano">Humano</option>
+            <option value="Elfo">Elfo</option>
+            <option value="Orc">Orc</option>
+            <option value="Anão">Anão</option>
+        </select>
+        <br> O máximo de pontos que seu personagem pode ter é:<b>45</b> <br>
+
+        <input type="number" placeholder="FOR" max="13" min="7" id="FOR__"><b id="FORv"></b>
+        <input type="number" placeholder="DEX" max="13" min="7" id="DEX__"><b id="DEXv"></b>
+        <input type="number" placeholder="INT" max="13" min="7" id="INT__"><b id="INTv"></b>
+        <input type="number" placeholder="SEN" max="13" min="7" id="SEN__"><b id="SENv"></b>
+        <input type="number" placeholder="CHAR" max="13" min="7" id="CHAR__"><b id="CHARv"></b>
+        <br><br>
+        <button type="button" onclick="cadastrar()">Criar Personagem</button> <br>
+        
+
+    </div>
+</body>
+
+</html>
+<script>
+    var cadastrados = [];
+    var informacoes = {
+        login: '',
+        email: '',
+        senha: '',
+        personagem: '',
+        classe: '',
+        raca: '',
+        forca: '',
+        destreza: '',
+        inteligencia: '',
+        sentidos: '',
+        charme: ''
+    };
+    function trocar(esconder, mostrar) {
+
+        if (Nome__.value == 0 && Email__.value == 0 && Senha__.value == 0 && SenhaR__.value == 0) {
+            var nome = Number(Nome__.value);
+            alert('Você não preencheu todas as tabelas !!')
+            if (nome == 0 || nome < 6) {
+                nomev.style.color = 'red'
+                mensagemn__.innerHTML = 'Nome muito curto '
+            }
+            if (Email__.value == 0) {
+                emailv.style.color = 'red'
+                emailv.innerHTML = 'X'
+            }
+            if (Senha__ != SenhaR__) {
+                senhav.style.color = 'red'
+                senhav.innerHTML = 'X'
+                senharv.style.color = 'red'
+                senharv.innerHTML = 'X'
+                mensagem__.style.color = 'red'
+                mensagem__.innerHTML = 'Você repetiu a senha errado'
+            }
+        }
+
+        else {
+            esconder.style.display = 'none';
+            mostrar.style.display = 'block';
+            informacoes.login = Nome__.value;
+            informacoes.senha = Senha__.value;
+            informacoes.email = Email__.value;
+        }
+
+    }
+    function cadastrar() {
+        var FOR = Number(FOR__.value);
+        var DEX = Number(DEX__.value);
+        var INT = Number(INT__.value);
+        var SEN = Number(SEN__.value);
+        var CHAR = Number(CHAR__.value);
+        var soma = FOR + DEX + INT + SEN + CHAR;
+        if (FOR != 0 && DEX != 0 && INT != 0 && SEN != 0 && CHAR != 0) {
+            if (soma > 45) {
+                alert('Seu personagem tá apelão demais, pode arrumando isso aí')
+            }
+            else if (soma < 45) {
+                alert('Você ainda tem pontos sobrando')
+            }
+            else {
+                alert('Parabéns, seu personagem foi criado com sucesso!')
+
+                informacoes.personagem = nomep.value;
+                informacoes.raca = raca__.value;
+                informacoes.classe = classe__.value;
+                informacoes.forca = FOR;
+                informacoes.inteligencia = INT;
+                informacoes.destreza = DEX;
+                informacoes.sentidos = SEN;
+                informacoes.charme = CHAR;
+                cadastrados.push(informacoes);
+            }
+
+        }
+        if (FOR == 0) {
+            FORv.style.color = 'red'
+            FORv.innerHTML = 'X'
+        }
+        if (DEX == 0) {
+            DEXv.style.color = 'red'
+            DEXv.innerHTML = 'X'
+        }
+        if (INT == 0) {
+            INTv.style.color = 'red'
+            INTv.innerHTML = 'X'
+        }
+        if (SEN == 0) {
+            SENv.style.color = 'red'
+            SENv.innerHTML = 'X'
+        }
+        if (CHAR == 0) {
+            CHARv.style.color = 'red'
+            CHARv.innerHTML = 'X'
+        }
+
+    }
+</script>
