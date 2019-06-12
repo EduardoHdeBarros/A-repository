@@ -8,12 +8,12 @@ router.post('/entrar', function (req, res, next) {
 
   banco.conectar().then(() => {
     console.log(`Chegou p/ login: ${JSON.stringify(req.body)}`);
-    var login = req.body.Emaillogin; // depois de .body, use o nome (name) do campo em seu formulário de login
+    var login = req.body.EmailLogin; // depois de .body, use o nome (name) do campo em seu formulário de login
     var senha = req.body.SenhaLogin; // depois de .body, use o nome (name) do campo em seu formulário de login
     if (login == undefined || senha == undefined) {
       throw new Error(`Dados de login não chegaram completos: ${login} / ${senha}`);
     }
-    return banco.sql.query(`select * from usuario where login='${login}' and senha='${senha}'`);
+    return banco.sql.query(`select * from tb_usuario where usuemail='${login}' and ususenha='${senha}'`);
   }).then(consulta => {
 
     console.log(`Usuários encontrados: ${JSON.stringify(consulta.recordset)}`);
@@ -42,19 +42,35 @@ router.post('/cadastrar', function (req, res, next) {
   var nome;
   var login;
   var senha;
+  var classe;
+  var raca;
+  var força;
+  var destreza;
+  var inteligencia;
+  var sentidos;
+  var charme 
   var cadastro_valido = false;
 
   banco.conectar().then(() => {
     console.log(`Chegou p/ cadastro: ${JSON.stringify(req.body)}`);
-	nome = req.body.nome; // depois de .body, use o nome (name) do campo em seu formulário de login
+	nome = req.body.Nome; // depois de .body, use o nome (name) do campo em seu formulário de login
     login = req.body.EmailLogin; // depois de .body, use o nome (name) do campo em seu formulário de login
     senha = req.body.SenhaLogin; // depois de .body, use o nome (name) do campo em seu formulário de login
-    if (login == undefined || senha == undefined ) {
-	  // coloque a frase de erro que quiser aqui. Ela vai aparecer no formulário de cadastro
+    classe = req.body.classe__;
+    raca = req.body.raca__;
+    força = req.body.FOR__;
+    destreza = req.body.DEX__;
+    inteligencia = req.body.INT__;
+    sentidos = req.body.SEN__;
+    charme = req.body.CHAR__;
+    if (login == undefined || senha == undefined || nome == undefined || raca == undefined || classe == undefined || força == undefined || destreza == undefined ||        inteligencia == undefined || sentidos == undefined || charme == undefined ) {
+    // coloque a frase de erro que quiser aqui. Ela vai aparecer no formulário de cadastro
+    
       throw new Error(`Dados de cadastro não chegaram completos: ${login} / ${senha} / ${nome}`);
     }
-    return banco.sql.query(`select count(*) as contagem from usuario where login = '${login}'`);
-  }).then(consulta => {
+    return banco.sql.query(`select count(*) as contagem from tb_usuario where usuemail = '${login}'`);
+  }).then(consulta => { 
+    
 
 	if (consulta.recordset[0].contagem >= 1) {
 		res.status(400).send(`Já existe usuário com o login "${login}"`);
@@ -73,8 +89,9 @@ router.post('/cadastrar', function (req, res, next) {
   }).finally(() => {
 	  if (cadastro_valido) {		  
 			  
-		banco.sql.query(`insert into usuario ( login, senha) values ('${login}','${senha}')`).then(function() {
-			console.log(`Cadastro criado com sucesso!`);
+      banco.sql.query(`insert into tb_usuario (usunome, usuemail, ususenha) values ('${nome}','${login}','${senha}')`).then(function() {
+      console.log(`Cadastro criado com sucesso!`);
+      banco.sql.query(`insert into tb_status (raca,classe,usufor,usudex,usuint,ususen,usuchar) value('${classe}','${raca}','${força}','${destreza}','${inteligencia}','${sentidos}','${charme}')`)
 			res.sendStatus(201); 
 			// status 201 significa que algo foi criado no back-end, 
 				// no caso, um registro de usuário ;)		

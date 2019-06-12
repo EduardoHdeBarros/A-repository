@@ -2,10 +2,10 @@ var desenvolvimento = false;
 
 var configuracoes = {
     producao: {
-        server: "testexyzwtrtwr.database.windows.net",
-        user: "adminbandtec",
-        password: "b@ndtec2018",
-        database: "gf2018",
+        server: "bancodedadosdudu.database.windows.net",
+        user: "eduardo.bandtec",
+        password: "#Gf44910623825",
+        database: "BancoDeDadosDudu",
         options: {
             encrypt: true
         },

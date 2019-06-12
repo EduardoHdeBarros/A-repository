@@ -37,5 +37,6 @@
     background-color: chartreuse;
     padding: 30px;
     display: none;
-    
+    margin-left: auto;
+    margin-right: auto;
 }

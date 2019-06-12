@@ -13,14 +13,62 @@
         <div class="textopo">
             RPG de mesa - por ManoToupeira
         </div>
-        <form class="caixacadastro" id="contaLogin">
+        <form class="caixacadastro" id="contaLogin" method="post" onsubmit="return entrar()">
             Seja Bem-Vindo, jovem aventureiro ! <br> <br>
-            <input type="text" placeholder="Digite seu E-mail" size="38" id="EmailLogin"> <br> <br>
-            <input type="password" placeholder="Digite sua senha" size="38" id="SenhaLogin"> </b>
-            <div id="mensagem__"></div>
+            <input type="text" placeholder="Digite seu E-mail" size="38" name="EmailLogin" id="EmailLogin"> <br> <br>
+            <input type="password" placeholder="Digite sua senha" size="38" name="SenhaLogin" id="SenhaLogin"> </b>
+            <div id="mensagem__" style="display: none">Usuário e/ou senha inválidos!</div>
             <br>
-            <button type="submit">Entrar</button><br> <br>
+            <button id="botao__" >Entrar</button><br> <br>
             <a href="Cadastro.html">Cadastre-se aqui !!!</a>
+            <img src="aguarde.gif" id="img_aguarde" style="display: none;">
         </form>
 </body>
 </html>
+<script>
+verificarAutenticacao();
+
+    function verificarAutenticacao() {
+        if (sessionStorage.usuario_bandtec != undefined) {
+            window.location.href = 'tela.html';
+        }
+    }
+
+    function entrar() {
+        aguardar();
+        var formulario = new URLSearchParams(new FormData(contaLogin));
+        fetch("/usuarios/entrar", {
+            method: "POST",
+            body: formulario
+        }).then(function (response) {
+            
+            if (response.ok) {
+
+                response.json().then(function (resposta) {
+
+                    sessionStorage.usuario_bandtec = resposta.nome;
+                    verificarAutenticacao();
+
+                });
+            } else {
+
+                console.log('Erro de login!');
+                finalizar_aguardar();
+            }
+        });
+
+        return false;
+    }
+
+    function aguardar() {
+        botao__.disabled = true;
+        img_aguarde.style.display='block';
+        mensagem__.style.display='none';
+    }
+
+    function finalizar_aguardar() {
+        botao__.disabled = false;
+        img_aguarde.style.display='none';
+        mensagem__.style.display='block';
+    }
+</script>
